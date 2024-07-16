@@ -39,6 +39,8 @@ namespace BikeStore
 
             app.UseRouting();
 
+            // usar autentificacion y autorizacion
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.MapControllerRoute(

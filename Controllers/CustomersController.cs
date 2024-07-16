@@ -6,9 +6,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using BikeStore.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace BikeStore.Controllers
 {
+    [Authorize]
     public class CustomersController : Controller
     {
         private readonly BikeStoreContext _context;
