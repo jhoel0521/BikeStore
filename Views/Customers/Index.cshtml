@@ -69,11 +69,7 @@
                     @Html.DisplayFor(modelItem => item.ZipCode)
                 </td>
                 <td>
-                    <div class="btn-group">
-                        <a asp-action="Details" asp-route-id="@item.CustomerId" class="btn btn-primary">Detalle</a>
-                        <a asp-action="Edit" asp-route-id="@item.CustomerId" class="btn btn-warning">Editar</a>
-                        <a asp-action="Delete" asp-route-id="@item.CustomerId" class="btn btn-danger">Eliminar</a>
-                    </div>
+                    @await Html.PartialAsync("_ActionButtons", item.CustomerId)
                 </td>
             </tr>
         }
