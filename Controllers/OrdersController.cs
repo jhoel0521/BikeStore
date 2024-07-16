@@ -47,7 +47,9 @@ namespace BikeStore.Controllers
         // GET: Orders/Create
         public IActionResult Create()
         {
-            ViewData["CustomerId"] = new SelectList(_context.Customers, "CustomerId", "CustomerId");
+            var context = _context.Customers.
+                Select(c => new { c.CustomerId, FullName = $"{c.CustomerId}: {c.FirstName} {c.LastName}" }).ToList();
+            ViewData["CustomerId"] = new SelectList(context, "CustomerId", "FullName");
             return View();
         }
 
@@ -64,7 +66,9 @@ namespace BikeStore.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CustomerId"] = new SelectList(_context.Customers, "CustomerId", "CustomerId", order.CustomerId);
+            var context = _context.Customers.
+               Select(c => new { c.CustomerId, FullName = $"{c.CustomerId}: {c.FirstName} {c.LastName}" }).ToList();
+            ViewData["CustomerId"] = new SelectList(context, "CustomerId", "FullName", order.CustomerId);
             return View(order);
         }
 
@@ -81,7 +85,9 @@ namespace BikeStore.Controllers
             {
                 return NotFound();
             }
-            ViewData["CustomerId"] = new SelectList(_context.Customers, "CustomerId", "CustomerId", order.CustomerId);
+            var context = _context.Customers.
+               Select(c => new { c.CustomerId, FullName = $"{c.CustomerId}: {c.FirstName} {c.LastName}" }).ToList();
+            ViewData["CustomerId"] = new SelectList(context, "CustomerId", "FullName", order.CustomerId);
             return View(order);
         }
 
@@ -117,7 +123,9 @@ namespace BikeStore.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CustomerId"] = new SelectList(_context.Customers, "CustomerId", "CustomerId", order.CustomerId);
+            var context = _context.Customers.
+               Select(c => new { c.CustomerId, FullName = $"{c.CustomerId}: {c.FirstName} {c.LastName}" }).ToList();
+            ViewData["CustomerId"] = new SelectList(context, "CustomerId", "FullName", order.CustomerId);
             return View(order);
         }
 
