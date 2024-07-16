@@ -21,10 +21,25 @@ namespace BikeStore.Controllers
         }
 
         // GET: Customers
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string searchString)
         {
-            return View(await _context.Customers.ToListAsync());
+            var query = _context.Customers.AsQueryable();
+
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                query = query.Where(
+                    c =>
+                        (c.FirstName + " "+c.LastName + " "+c.Email + " "+c.Phone + " "+c.Street + " "+c.City + " "+c.State + " "+c.ZipCode).Contains(searchString)
+                    );
+            }
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine(searchString ?? "No llego nada");
+            Console.ResetColor();
+            var list = await query.ToListAsync();
+            ViewBag.SearchString = searchString;
+            return View(list);
         }
+
 
         // GET: Customers/Details/5
         public async Task<IActionResult> Details(int? id)
