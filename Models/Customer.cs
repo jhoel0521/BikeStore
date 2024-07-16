@@ -27,11 +27,11 @@ public partial class Customer
     [Display(Name = "Calle/Direccion", Prompt = "Calle #9")]
     [StringLength(50, ErrorMessage = "La Calle/Direccion no puede exeder los 50 caracteres")]
     public string? Street { get; set; }
-    [Display(Name = "Ciudad", Prompt = "Porongo")]
+    [Display(Name = "Ciudad", Prompt = "Santa Cruz")]
     [StringLength(50, ErrorMessage = "La ciudad no puede exeder los 50 caracteres")]
     public string? City { get; set; }
-    [Display(Name = "Estado/Departamento", Prompt = "Santa Cruz")]
-    [StringLength(50, ErrorMessage = "El Estado/Departamento no puede exeder los 50 caracteres")]
+    [Display(Name = "Estado/Paiz", Prompt = "Bolivia")]
+    [StringLength(50, ErrorMessage = "El Estado/Paiz no puede exeder los 50 caracteres")]
     public string? State { get; set; }
     [Display(Name = "Codigo Postal", Prompt = "0000")]
     [StringLength(5, ErrorMessage = "El Codigo Postal no puede exeder los 5 caracteres")]
