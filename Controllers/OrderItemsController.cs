@@ -49,7 +49,9 @@ namespace BikeStore.Controllers
         public IActionResult Create()
         {
             ViewData["OrderId"] = new SelectList(_context.Orders, "OrderId", "OrderId");
-            ViewData["ProductId"] = new SelectList(_context.Products, "ProductId", "ProductId");
+            var context = _context.Products.
+               Select(c => new { c.ProductId, FullName = $"{c.ProductId}: {c.ProductName} " }).ToList();
+            ViewData["ProductId"] = new SelectList(context, "ProductId", "FullName");
             return View();
         }
 
@@ -67,7 +69,9 @@ namespace BikeStore.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["OrderId"] = new SelectList(_context.Orders, "OrderId", "OrderId", orderItem.OrderId);
-            ViewData["ProductId"] = new SelectList(_context.Products, "ProductId", "ProductId", orderItem.ProductId);
+            var context = _context.Products.
+              Select(c => new { c.ProductId, FullName = $"{c.ProductId}: {c.ProductName} " }).ToList();
+            ViewData["ProductId"] = new SelectList(context, "ProductId", "FullName", orderItem.ProductId);
             return View(orderItem);
         }
 
@@ -85,7 +89,9 @@ namespace BikeStore.Controllers
                 return NotFound();
             }
             ViewData["OrderId"] = new SelectList(_context.Orders, "OrderId", "OrderId", orderItem.OrderId);
-            ViewData["ProductId"] = new SelectList(_context.Products, "ProductId", "ProductId", orderItem.ProductId);
+            var context = _context.Products.
+              Select(c => new { c.ProductId, FullName = $"{c.ProductId}: {c.ProductName} " }).ToList();
+            ViewData["ProductId"] = new SelectList(context, "ProductId", "FullName", orderItem.ProductId);
             return View(orderItem);
         }
 
@@ -122,7 +128,9 @@ namespace BikeStore.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["OrderId"] = new SelectList(_context.Orders, "OrderId", "OrderId", orderItem.OrderId);
-            ViewData["ProductId"] = new SelectList(_context.Products, "ProductId", "ProductId", orderItem.ProductId);
+            var context = _context.Products.
+             Select(c => new { c.ProductId, FullName = $"{c.ProductId}: {c.ProductName} " }).ToList();
+            ViewData["ProductId"] = new SelectList(context, "ProductId", "FullName", orderItem.ProductId);
             return View(orderItem);
         }
 
