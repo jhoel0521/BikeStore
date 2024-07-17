@@ -21,11 +21,51 @@ namespace BikeStore.Controllers
         }
 
         // GET: Orders
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string ColunOrd, string ordenamiento, string CustomerId, string StartDate, string EndDate)
         {
-            var bikeStoreContext = _context.Orders.Include(o => o.Customer);
-            return View(await bikeStoreContext.ToListAsync());
+            var context = _context.Customers
+                .Select(c => new { c.CustomerId, FullName = $"{c.CustomerId}: {c.FirstName} {c.LastName}" }).ToList();
+            ViewData["Customer"] = new SelectList(context, "CustomerId", "FullName");
+            ViewData["CustomerId"] = CustomerId;
+            ViewData["ColunOrd"] = ColunOrd;
+            ViewData["ordenamiento"] = ordenamiento;
+            ViewData["StartDate"] = StartDate;
+            ViewData["EndDate"] = EndDate;
+
+            var query = _context.Orders.AsQueryable();
+
+            if (int.TryParse(CustomerId, out int customerId) && customerId != 0)
+            {
+                query = query.Where(o => o.CustomerId == customerId);
+            }
+            if (DateOnly.TryParse(StartDate, out DateOnly startDate))
+            {
+                query = query.Where(o => o.OrderDate >= startDate);
+            }
+            if (DateOnly.TryParse(EndDate, out DateOnly endDate))
+            {
+                query = query.Where(o => o.OrderDate <= endDate);
+            }
+
+            if (!string.IsNullOrEmpty(ColunOrd))
+            {
+                switch (ColunOrd)
+                {
+                    case "OrderDate":
+                        query = ordenamiento == "↑" ? query.OrderBy(o => o.OrderDate) : query.OrderByDescending(o => o.OrderDate);
+                        break;
+                    case "Customer":
+                        query = ordenamiento == "↑" ? query.OrderBy(o => o.Customer.FirstName + " " + o.Customer.LastName) : query.OrderByDescending(o => o.Customer.FirstName + " " + o.Customer.LastName);
+                        break;
+                    default:
+                        break;
+                }
+            }
+
+            var list = await query.Include(o => o.Customer).ToListAsync();
+            return View(list);
         }
+
 
         // GET: Orders/Details/5
         public async Task<IActionResult> Details(int? id)

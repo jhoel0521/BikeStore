@@ -42,6 +42,7 @@
                     <div class="d-flex justify-content-end">
                         <div class="btn-group">
                             <a asp-action="Edit" asp-route-id="@Model?.CustomerId" class="btn btn-warning">Editar</a>
+                            <a asp-controller="Orders" asp-action="Index" asp-route-CustomerId="@Model?.CustomerId" class="btn btn-success">Ver Ordenes</a>
                             <a asp-action="Index" class="btn btn-info">Volver a Lista</a>
                         </div>
                     </div>

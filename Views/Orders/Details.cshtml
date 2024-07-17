@@ -4,27 +4,35 @@
     ViewData["Title"] = "Details";
 }
 
-<h1>Details</h1>
 
-<div>
-    <h4>Order</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.OrderDate)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.OrderDate)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Customer)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Customer.CustomerId)
-        </dd>
-    </dl>
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.OrderId">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+
+
+<div class="d-flex justify-content-center">
+    <div class="row">
+        <div class="col-12">
+            <div class="card" style="width=100%">
+                <div class="card-body">
+                    <h5 class="card-title">Datos De la Orden</h5>
+                    <article class="card-text">
+                    </article>
+                    <ul class="list-group list-group-flush px-4">
+                        <li class="list-group-item">
+                            <p><b> @Html.DisplayNameFor(model => model.Customer):</b> @Html.DisplayFor(model => model.Customer.FirstName) @Html.DisplayFor(model => model.Customer.LastName)</p>
+                        </li>
+                        <li class="list-group-item">
+                            <p><b> @Html.DisplayNameFor(model => model.OrderDate):</b> @Html.DisplayFor(model => model.OrderDate)</p>
+                        </li>
+                    </ul>
+                    <div class="d-flex justify-content-end">
+                        <div class="btn-group">
+                            <a asp-action="Edit" asp-route-id="@Model?.OrderId" class="btn btn-warning">Editar</a>
+                            <a asp-controller="OrderItems" asp-action="Index" asp-route-OrderId="@Model?.OrderId" class="btn btn-success">Ver Detalle</a>
+                            <a asp-action="Index" class="btn btn-info">Volver a Lista</a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

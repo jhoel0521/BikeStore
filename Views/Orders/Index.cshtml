@@ -1,42 +1,80 @@
 ﻿@model IEnumerable<BikeStore.Models.Order>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Lista de Pedidos";
 }
 
-<h1>Index</h1>
+<h1>Lista de Pedidos</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.OrderDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Customer)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
+<div class="d-flex justify-content-end">
+    <a asp-action="Create" class="btn btn-info">Nuevo Pedido</a>
+</div>
+<div class="d-flex justify-content-end">
+    <form asp-action="Index" method="get">
+        <div class="input-group mt-3">
+            <label for="CustomerId" class="input-group-text">Cliente</label>
+            <select class="form-select" name="CustomerId" id="CustomerId">
+                <option value="">Todos los clientes</option>
+                @foreach (var item in (SelectList)ViewData["Customer"])
+                {
+                    if (item.Value == ViewData["CustomerId"]?.ToString())
+                    {
+                        <option value="@item.Value" selected>@item.Text</option>
+                    }
+                    else
+                    {
+                        <option value="@item.Value">@item.Text</option>
+                    }
+
+                }
+            </select>
+            <label for="StartDate" class="input-group-text">Rango de fechas De:</label>
+            <input type="date" class="form-control" name="StartDate" id="StartDate" value="@ViewData["StartDate"]">
+            <label for="EndDate" class="input-group-text">A:</label>
+            <input type="date" class="form-control" name="EndDate" id="EndDate" value="@ViewData["EndDate"]">
+            <button type="button" class="input-group-text" onclick="fullResect(event)">Resetar</button>
+            <button type="submit" class="input-group-text">Buscar</button>
+        </div>
+    </form>
+</div>
+<div class="table-responsive">
+    <table class="table table-light table-striped table-hover" id="myTable">
+        <thead>
             <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.OrderDate)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Customer.FirstName) @Html.DisplayFor(modelItem => item.Customer.LastName)
-                </td>
-                <td>
-                    <a asp-action="Edit" asp-route-id="@item.OrderId">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.OrderId">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.OrderId">Delete</a>
-                </td>
+                <th>
+                    @await Html.PartialAsync("_SortButtonComponent", Tuple.Create("OrderDate", Html.DisplayNameFor(model => model.OrderDate).ToString()))
+                </th>
+                <th>
+                    @await Html.PartialAsync("_SortButtonComponent", Tuple.Create("Customer", Html.DisplayNameFor(model => model.Customer).ToString()))
+                </th>
+                <th><p class="d-flex align-items-center justify-content-center">Acciones</p></th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.OrderDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Customer.FirstName) @Html.DisplayFor(modelItem => item.Customer.LastName)
+                    </td>
+                    <td>
+                        <div class="d-flex justify-content-center">
+                            @await Html.PartialAsync("_ActionButtons", item.OrderId)
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+<script>
+    function fullResect(event) {
+        event.preventDefault();
+        document.getElementById("CustomerId").value = "";
+        document.getElementById("StartDate").value = "";
+        document.getElementById("EndDate").value = "";
+    }
+</script>
