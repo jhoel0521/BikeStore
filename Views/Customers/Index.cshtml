@@ -21,76 +21,72 @@
 
 
 <hr />
-<table class="table table-light table-striped table-hover" id="myTable">
-    <thead class="text-center">
-        <tr>
-            <th>
-                <form asp-action="Index" method="get">
-                    <div class="input-group">
-                        <input type="text" class="form-control" value="@Html.DisplayNameFor(model => model.FirstName)" readonly>
-                        <input type="hidden" name="ColunOrd" value="FirstName" />
-                        <input type="submit" class="input-group-text" name="ordenamiento" value="↑" />
-                        <input type="submit" class="input-group-text" name="ordenamiento" value="↓" />
-                    </div>
-                </form>
-
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.LastName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Phone)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Email)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Street)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.City)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.State)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ZipCode)
-            </th>
-            <th>Acciones</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
+<div class="table-responsive">
+    <table class="table table-light table-striped table-hover" id="myTable">
+        <thead class="text-center">
             <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.FirstName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.LastName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Phone)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Email)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Street)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.City)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.State)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.ZipCode)
-                </td>
-                <td>
-                    @await Html.PartialAsync("_ActionButtons", item.CustomerId)
-                </td>
+                <th>
+                    @await Html.PartialAsync("_SortButtonComponent", Tuple.Create("FirstName", Html.DisplayNameFor(model => model.FirstName).ToString()))
+
+
+                </th>
+                <th>
+                    @await Html.PartialAsync("_SortButtonComponent", Tuple.Create("LastName", Html.DisplayNameFor(model => model.LastName).ToString()))
+                </th>
+                <th>
+                    @await Html.PartialAsync("_SortButtonComponent", Tuple.Create("Phone", Html.DisplayNameFor(model => model.Phone).ToString()))
+                </th>
+                <th>
+                    @await Html.PartialAsync("_SortButtonComponent", Tuple.Create("Email", Html.DisplayNameFor(model => model.Email).ToString()))
+                </th>
+                <th>
+                    @await Html.PartialAsync("_SortButtonComponent", Tuple.Create("Street", Html.DisplayNameFor(model => model.Street).ToString()))
+                </th>
+                <th>
+                    @await Html.PartialAsync("_SortButtonComponent", Tuple.Create("City", Html.DisplayNameFor(model => model.City).ToString()))
+                </th>
+                <th>
+                    @await Html.PartialAsync("_SortButtonComponent", Tuple.Create("State", Html.DisplayNameFor(model => model.State).ToString()))
+                </th>
+                <th>
+                    @await Html.PartialAsync("_SortButtonComponent", Tuple.Create("ZipCode", Html.DisplayNameFor(model => model.ZipCode).ToString()))
+                </th>
+                <th><p class="d-flex align-items-center justify-content-center">Acciones</p></th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.FirstName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.LastName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Phone)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Email)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Street)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.City)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.State)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ZipCode)
+                    </td>
+                    <td>
+                        @await Html.PartialAsync("_ActionButtons", item.CustomerId)
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

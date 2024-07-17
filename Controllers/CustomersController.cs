@@ -43,15 +43,33 @@ namespace BikeStore.Controllers
                     case "LastName":
                         query = ordenamiento == "↑" ? query.OrderBy(c => c.LastName) : query.OrderByDescending(c => c.LastName);
                         break;
-                    // Agrega más casos para otras columnas si es necesario
+                    case "Email":
+                        query = ordenamiento == "↑" ? query.OrderBy(c => c.Email) : query.OrderByDescending(c => c.Email);
+                        break;
+                    case "Phone":
+                        query = ordenamiento == "↑" ? query.OrderBy(c => c.Phone) : query.OrderByDescending(c => c.Phone);
+                        break;
+                    case "Street":
+                        query = ordenamiento == "↑" ? query.OrderBy(c => c.Street) : query.OrderByDescending(c => c.Street);
+                        break;
+                    case "City":
+                        query = ordenamiento == "↑" ? query.OrderBy(c => c.City) : query.OrderByDescending(c => c.City);
+                        break;
+                    case "State":
+                        query = ordenamiento == "↑" ? query.OrderBy(c => c.State) : query.OrderByDescending(c => c.State);
+                        break;
+                    case "ZipCode":
+                        query = ordenamiento == "↑" ? query.OrderBy(c => c.ZipCode) : query.OrderByDescending(c => c.ZipCode);
+                        break;
                     default:
-                        // Maneja el nombre de columna no válido
                         break;
                 }
             }
 
             var list = await query.ToListAsync();
             ViewBag.SearchString = searchString;
+            ViewBag.ColunOrd = ColunOrd;
+            ViewBag.ordenamiento = ordenamiento;
             return View(list);
         }
 

@@ -1,0 +1,8 @@
+﻿<form asp-action="Index" method="get" class="d-flex align-items-center">
+    <p style="margin-right:0.5rem" >@Model.Item2</p>
+    <div class="btn-group-vertical">
+        <input type="submit" class="btn @(ViewBag.ColunOrd == Model.Item1 && ViewBag.ordenamiento == "↑" ? "btn-info" : "btn-outline-info") btn-sm custom-btn" name="ordenamiento" value="↑" />
+        <input type="hidden" name="ColunOrd" value="@Model.Item1" />
+        <input type="submit" class="btn @(ViewBag.ColunOrd == Model.Item1 && ViewBag.ordenamiento == "↓" ? "btn-info" : "btn-outline-info") btn-sm custom-btn" name="ordenamiento" value="↓" />
+    </div>
+</form>
