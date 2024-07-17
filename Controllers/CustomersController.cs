@@ -21,7 +21,7 @@ namespace BikeStore.Controllers
         }
 
         // GET: Customers
-        public async Task<IActionResult> Index(string searchString)
+        public async Task<IActionResult> Index(string searchString, string ColunOrd, string ordenamiento)
         {
             var query = _context.Customers.AsQueryable();
 
@@ -29,16 +29,32 @@ namespace BikeStore.Controllers
             {
                 query = query.Where(
                     c =>
-                        (c.FirstName + " "+c.LastName + " "+c.Email + " "+c.Phone + " "+c.Street + " "+c.City + " "+c.State + " "+c.ZipCode).Contains(searchString)
-                    );
+                        (c.FirstName + " " + c.LastName + " " + c.Email + " " + c.Phone + " " + c.Street + " " + c.City + " " + c.State + " " + c.ZipCode).Contains(searchString)
+                );
             }
-            Console.ForegroundColor = ConsoleColor.Red;
-            Console.WriteLine(searchString ?? "No llego nada");
-            Console.ResetColor();
+
+            if (!string.IsNullOrEmpty(ColunOrd))
+            {
+                switch (ColunOrd)
+                {
+                    case "FirstName":
+                        query = ordenamiento == "↑" ? query.OrderBy(c => c.FirstName) : query.OrderByDescending(c => c.FirstName);
+                        break;
+                    case "LastName":
+                        query = ordenamiento == "↑" ? query.OrderBy(c => c.LastName) : query.OrderByDescending(c => c.LastName);
+                        break;
+                    // Agrega más casos para otras columnas si es necesario
+                    default:
+                        // Maneja el nombre de columna no válido
+                        break;
+                }
+            }
+
             var list = await query.ToListAsync();
             ViewBag.SearchString = searchString;
             return View(list);
         }
+
 
 
         // GET: Customers/Details/5

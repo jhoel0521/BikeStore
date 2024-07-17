@@ -21,11 +21,19 @@
 
 
 <hr />
-<table class="table table-light table-striped table-hover">
+<table class="table table-light table-striped table-hover" id="myTable">
     <thead class="text-center">
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.FirstName)
+                <form asp-action="Index" method="get">
+                    <div class="input-group">
+                        <input type="text" class="form-control" value="@Html.DisplayNameFor(model => model.FirstName)" readonly>
+                        <input type="hidden" name="ColunOrd" value="FirstName" />
+                        <input type="submit" class="input-group-text" name="ordenamiento" value="↑" />
+                        <input type="submit" class="input-group-text" name="ordenamiento" value="↓" />
+                    </div>
+                </form>
+
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.LastName)
