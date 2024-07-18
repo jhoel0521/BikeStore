@@ -42,6 +42,9 @@
         <thead>
             <tr>
                 <th>
+                    @await Html.PartialAsync("_SortButtonComponent", Tuple.Create("OrderId", Html.DisplayNameFor(model => model.OrderId).ToString()))
+                </th>
+                <th>
                     @await Html.PartialAsync("_SortButtonComponent", Tuple.Create("OrderDate", Html.DisplayNameFor(model => model.OrderDate).ToString()))
                 </th>
                 <th>
@@ -54,6 +57,9 @@
             @foreach (var item in Model)
             {
                 <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.OrderId)
+                    </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.OrderDate)
                     </td>

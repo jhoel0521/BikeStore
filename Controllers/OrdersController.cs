@@ -57,6 +57,9 @@ namespace BikeStore.Controllers
                     case "Customer":
                         query = ordenamiento == "↑" ? query.OrderBy(o => o.Customer.FirstName + " " + o.Customer.LastName) : query.OrderByDescending(o => o.Customer.FirstName + " " + o.Customer.LastName);
                         break;
+                    case "OrderId":
+                        query = ordenamiento == "↑" ? query.OrderBy(o => o.OrderId) : query.OrderByDescending(o => o.OrderId);
+                        break;
                     default:
                         break;
                 }

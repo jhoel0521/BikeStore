@@ -17,6 +17,8 @@ CREATE TABLE Orders (
     customer_id INT NOT NULL,
     order_date DATE NOT NULL,
     FOREIGN KEY (customer_id) REFERENCES Customers(customer_id)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
 );
 
 CREATE TABLE Products (
@@ -33,6 +35,10 @@ CREATE TABLE Order_items (
     quantity INT NOT NULL,
     price DECIMAL(10,2) NOT NULL,
     discount DECIMAL(4,2) NOT NULL,
-    FOREIGN KEY (order_id) REFERENCES Orders(order_id),
+    FOREIGN KEY (order_id) REFERENCES Orders(order_id)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
     FOREIGN KEY (product_id) REFERENCES Products(product_id)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
 );

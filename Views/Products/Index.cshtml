@@ -13,11 +13,9 @@
 <div class="d-flex justify-content-end">
     <form asp-action="Index" method="get">
         <div class="input-group mt-3">
-            <label for="CustomerId" class="input-group-text">Cliente</label>
-            <select class="form-select" name="CustomerId" id="CustomerId">
-                <option value="">Todos los clientes</option>
-                
-            </select>
+            <label for="ProductId" class="input-group-text">Producto</label>
+            <input type="search" class="form-control" placeholder="Datos del cliente" name="searchString" aria-label="Recipient's username" aria-describedby="basic-addon2"
+                   value="@ViewBag.SearchString">
             <label for="StartPrice" class="input-group-text">Rango de Precio Desde:</label>
             <input type="number" class="form-control" name="StartPrice" id="StartPrice" value="@ViewData["StartPrice"]">
             <label for="EndPrice" class="input-group-text"> Hasta:</label>
@@ -31,13 +29,13 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.ProductName)
+                @await Html.PartialAsync("_SortButtonComponent", Tuple.Create("ProductName", Html.DisplayNameFor(model => model.ProductName).ToString()))
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.ModelYear)
+                @await Html.PartialAsync("_SortButtonComponent", Tuple.Create("ModelYear", Html.DisplayNameFor(model => model.ModelYear).ToString()))
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Price)
+                @await Html.PartialAsync("_SortButtonComponent", Tuple.Create("Price", Html.DisplayNameFor(model => model.Price).ToString()))
             </th>
             <th>Acciones</th>
         </tr>
@@ -46,7 +44,7 @@
         @foreach (var item in Model)
         {
             <tr>
-                <td class="text-start" >
+                <td class="text-start">
                     @Html.DisplayFor(modelItem => item.ProductName)
                 </td>
                 <td>
@@ -55,7 +53,7 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.Price)
                 </td>
-                <td class="d-flex justify-content-center" >
+                <td class="d-flex justify-content-center">
                     @await Html.PartialAsync("_ActionButtons", item.ProductId)
                 </td>
 

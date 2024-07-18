@@ -21,9 +21,51 @@ namespace BikeStore.Controllers
         }
 
         // GET: Products
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string ColunOrd, string ordenamiento,string searchString, string StartPrice, string EndPrice)
         {
-            return View(await _context.Products.ToListAsync());
+            ViewBag.ColunOrd = ColunOrd;
+            ViewBag.ordenamiento = ordenamiento;
+            ViewBag.searchString = searchString;
+            ViewBag.StartPrice = StartPrice;
+            ViewBag.EndPrice = EndPrice;
+
+            var query = _context.Products.AsQueryable();
+            if (!string.IsNullOrEmpty(ColunOrd))
+            {
+                switch (ColunOrd)
+                {
+                    case "ProductName":
+                        query = ordenamiento == "↑" ? query.OrderBy(c => c.ProductName) : query.OrderByDescending(c => c.ProductName);
+                        break;
+                    case "ModelYear":
+                        query = ordenamiento == "↑" ? query.OrderBy(c => c.ModelYear) : query.OrderByDescending(c => c.ModelYear);
+                        break;
+                    case "Price":
+                        query = ordenamiento == "↑" ? query.OrderBy(c => c.Price) : query.OrderByDescending(c => c.Price);
+                        break;
+                    default:
+                        break;
+                }
+            }
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                query = query.Where(
+                    c => c.ProductName.Contains(searchString)
+                );
+            }
+            if (int.TryParse(StartPrice, out int startPrice))
+            {
+                query = query.Where(o => o.Price >= startPrice);
+            }
+            if (int.TryParse(EndPrice, out int endPrice))
+            {
+                query = query.Where(o => o.Price <= endPrice);
+            }
+            var list = await query.ToListAsync();
+            var context = _context.Products
+                .Select(c => new { c.ProductId, FullName = $"{c.ProductName}" }).ToList();
+            ViewData["Products"] = new SelectList(context, "ProductId", "FullName");
+            return View(list);
         }
 
         // GET: Products/Details/5

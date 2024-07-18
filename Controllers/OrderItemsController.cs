@@ -21,10 +21,29 @@ namespace BikeStore.Controllers
         }
 
         // GET: OrderItems
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string ColunOrd, string ordenamiento,string OrderId)
         {
-            var bikeStoreContext = _context.OrderItems.Include(o => o.Order).Include(o => o.Product);
-            return View(await bikeStoreContext.ToListAsync());
+            ViewBag.ColunOrd = ColunOrd;
+            ViewBag.ordenamiento = ordenamiento;
+            ViewBag.OrderId = OrderId;
+            var query = _context.OrderItems.AsQueryable();
+            if (!string.IsNullOrEmpty(ColunOrd))
+            {
+                switch (ColunOrd)
+                {
+                    case "OrderId":
+                        query = ordenamiento == "↑" ? query.OrderBy(c => c.OrderId) : query.OrderByDescending(c => c.OrderId);
+                        break;
+                    default:
+                        break;
+                }
+            }
+            if (int.TryParse(OrderId, out int orderId))
+            {
+                query = query.Where(o => o.OrderId == orderId);
+            }
+            var list = await query.Include(o => o.Order).Include(o => o.Product).ToListAsync();
+            return View(list);
         }
 
         // GET: OrderItems/Details/5

@@ -22,13 +22,11 @@ public partial class OrderItem
     [Display(Name = "Precio", Prompt = "99.99")]
     [Column(TypeName = "decimal(10, 2)")]
     [Required(ErrorMessage = "El Precio es requerido")]
-    [Range(0, int.MaxValue, ErrorMessage = "El precio no puede ser negativo")]
 
     public decimal Price { get; set; }
     [Display(Name = "Descuento", Prompt = "99.99")]
     [Column(TypeName = "decimal(10, 2)")]
     [Required(ErrorMessage = "El descuento es requerido")]
-    [Range(0,int.MaxValue,ErrorMessage ="El descuento no puede ser negativo")]
     public decimal Discount { get; set; }
     [Display(Name = "Codigo de la Orden")]
     public virtual Order? Order { get; set; }
