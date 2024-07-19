@@ -57,6 +57,74 @@
             </p>
         </div>
     </footer>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const allFormOderBy = document.querySelectorAll(".formOderBy");
+            const FirstFormSearch = document.getElementById("formSearch");
+
+            if (allFormOderBy && FirstFormSearch) {
+                function sendFormOderBy(event) {
+                    event.preventDefault();
+                    const form = event.target;
+                    const clickedButton = event.submitter;
+                    const ColunOrd = form.querySelector('input[type="hidden"]');
+                    const ordenamiento = clickedButton.getAttribute('data-orden');
+                    if (ColunOrd) {
+                        FirstFormSearch.appendChild(ColunOrd);
+                        const inputOrdenamiento = document.createElement("input");
+                        inputOrdenamiento.type = "hidden";
+                        inputOrdenamiento.name = "ordenamiento";
+                        inputOrdenamiento.value = ordenamiento;
+                        FirstFormSearch.appendChild(inputOrdenamiento);
+
+                        console.log(FirstFormSearch);
+                        FirstFormSearch.submit();
+                    }
+                }
+
+                function sendFormSearch(event) {
+                    console.log('sendFormSearch');
+                    event.preventDefault();
+
+                    const urlCompleta = window.location.href;
+
+                    const parametros = window.location.search;
+
+                    const params = new URLSearchParams(parametros);
+
+                    const ordenamiento = params.get("ordenamiento");
+                    const ColunOrd = params.get("ColunOrd");
+
+                    console.log("Ordenamiento:", ordenamiento);
+                    console.log("Columna de ordenamiento:", ColunOrd);
+
+                    if (ordenamiento && ColunOrd) {
+                        // Creamos los campos ocultos y los agregamos al formulario de búsqueda
+                        const inputOrdenamiento = document.createElement("input");
+                        inputOrdenamiento.type = "hidden";
+                        inputOrdenamiento.name = "ordenamiento";
+                        inputOrdenamiento.value = ordenamiento;
+
+                        const inputColunOrd = document.createElement("input");
+                        inputColunOrd.type = "hidden";
+                        inputColunOrd.name = "ColunOrd";
+                        inputColunOrd.value = ColunOrd;
+
+                        FirstFormSearch.appendChild(inputOrdenamiento);
+                        FirstFormSearch.appendChild(inputColunOrd);
+
+                        FirstFormSearch.submit(); // Envía el formulario de búsqueda
+                    }
+                }
+
+                allFormOderBy.forEach(form => {
+                    form.addEventListener('submit', sendFormOderBy);
+                });
+                FirstFormSearch.addEventListener('submit', sendFormSearch);
+            }
+
+        });
+    </script>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
