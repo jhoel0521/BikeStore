@@ -1,8 +1,51 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
 }
+<style>
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    img {
+        height: 350px;
+        width: auto;
+    }
+
+    :root {
+        --carousel-control-color: black;
+        --carousel-control-width: 30%;
+        --carousel-control-opacity: .8;
+        --carousel-control-hover-opacity: 1;
+    }
+
+</style>
+<div>
+    <h1 class="display-4 text-center">Bienvenido a Bike Store</h1>
+    <div class="d-flex justify-content-center">
+        <div id="carouselExampleInterval" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-inner">
+                <div class="carousel-item active" data-bs-interval="1000">
+                    <img src="/image/bicicleta_1.webp" class="d-block" alt="...">
+                </div>
+                <div class="carousel-item" data-bs-interval="2000">
+                    <img src="/image/bicicleta-2.jpg" class="d-block" alt="...">
+                </div>
+                <div class="carousel-item">
+                    <img src="/image/bicicleta_3.webp" class="d-block" alt="...">
+                </div>
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleInterval" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleInterval" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+        </div>
+    </div>
+    <div class="d-flex justify-content-center align-items-center" >
+        <div class="text-center p-5 border border-5 rounded" style="background-color: #fff; border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+            <h1 class="display-4">¡Elige tu bicicleta!</h1>
+            <p class="lead">Encuentra la bicicleta perfecta para ti y disfruta de cada paseo.</p>
+        </div>
+    </div>
+
 </div>
