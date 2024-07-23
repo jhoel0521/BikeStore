@@ -1,0 +1,72 @@
+﻿@{
+    int currentPage = ViewBag.CurrentPage ?? 1;
+    int totalPages = ViewBag.TotalPages ?? 1;
+    string action = ViewBag.Action ?? "Index";
+    int pageGroupSize = 5;
+
+    int startPage = currentPage - (pageGroupSize / 2);
+    if (startPage + pageGroupSize > totalPages)
+    {
+        startPage = totalPages - pageGroupSize + 1;
+    }
+    if (startPage < 1)
+    {
+        startPage = 1;
+    }
+    int endPage = startPage + pageGroupSize - 1;
+    if (endPage > totalPages)
+    {
+        endPage = totalPages;
+    }
+}
+
+<nav aria-label="Page navigation" id="pagination">
+    <ul class="pagination justify-content-center">
+        <li class="page-item @(currentPage == 1 ? "disabled" : "")">
+            <button class="page-link btn-pagination" data-page="1" aria-label="First">
+                <span aria-hidden="true">««</span>
+            </button>
+        </li>
+        <li class="page-item @(currentPage == 1 ? "disabled" : "")">
+            <button class="page-link btn-pagination" data-page="@currentPage - 1" aria-label="Previous">
+                <span aria-hidden="true">&laquo;</span>
+            </button>
+        </li>
+        @for (int i = startPage; i <= endPage; i++)
+        {
+            <li class="page-item @(i == currentPage ? "active" : "")">
+                <button class="page-link btn-pagination" data-page="@i">@i</button>
+            </li>
+        }
+        <li class="page-item @(currentPage == totalPages ? "disabled" : "")">
+            <button class="page-link btn-pagination" data-page="@currentPage + 1" aria-label="Next">
+                <span aria-hidden="true">&raquo;</span>
+            </button>
+        </li>
+        <li class="page-item @(currentPage == totalPages ? "disabled" : "")">
+            <button class="page-link btn-pagination" data-page="@totalPages" aria-label="Last">
+                <span aria-hidden="true">»»</span>
+            </button>
+        </li>
+    </ul>
+</nav>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // Obtener todos los botones de paginación
+        const paginationButtons = document.querySelectorAll(".btn-pagination");
+
+        paginationButtons.forEach(function (button) {
+            button.addEventListener("click", function () {
+                const nextPage = this.getAttribute("data-page");
+                const url = new URL(window.location.href);
+
+                // Actualizar el parámetro de la página en la URL
+                url.searchParams.set("page", nextPage);
+
+                // Redirigir a la nueva URL
+                window.location.href = url.toString();
+            });
+        });
+    });
+</script>

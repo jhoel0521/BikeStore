@@ -21,7 +21,7 @@ namespace BikeStore.Controllers
         }
 
         // GET: Customers
-        public async Task<IActionResult> Index(string searchString, string ColunOrd, string ordenamiento)
+        public async Task<IActionResult> Index(string searchString, string ColunOrd, string ordenamiento, int? page)
         {
             var query = _context.Customers.AsQueryable();
 
@@ -66,10 +66,18 @@ namespace BikeStore.Controllers
                 }
             }
 
-            var list = await query.ToListAsync();
             ViewBag.SearchString = searchString;
             ViewBag.ColunOrd = ColunOrd;
             ViewBag.ordenamiento = ordenamiento;
+            int pageSize = 10;
+            int pageNumber = page ?? 1;
+            int totalItems = await query.CountAsync();
+            int totalPages = (int)Math.Ceiling(totalItems / (double)pageSize);
+            var list = await query.Skip((pageNumber-1)*pageSize).Take(pageSize).ToListAsync();
+            
+            ViewBag.CurrentPage = pageNumber;
+            ViewBag.TotalPages = (int)totalItems/pageSize;
+            ViewBag.Action = nameof(Index);
             return View(list);
         }
 

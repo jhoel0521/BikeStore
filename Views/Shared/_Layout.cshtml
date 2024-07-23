@@ -74,14 +74,11 @@
                         inputOrdenamiento.name = "ordenamiento";
                         inputOrdenamiento.value = ordenamiento;
                         FirstFormSearch.appendChild(inputOrdenamiento);
-
-                        console.log(FirstFormSearch);
                         FirstFormSearch.submit();
                     }
                 }
 
                 function sendFormSearch(event) {
-                    console.log('sendFormSearch');
                     event.preventDefault();
 
                     const urlCompleta = window.location.href;
@@ -92,9 +89,6 @@
 
                     const ordenamiento = params.get("ordenamiento");
                     const ColunOrd = params.get("ColunOrd");
-
-                    console.log("Ordenamiento:", ordenamiento);
-                    console.log("Columna de ordenamiento:", ColunOrd);
 
                     if (ordenamiento && ColunOrd) {
                         const inputOrdenamiento = document.createElement("input");
@@ -110,8 +104,8 @@
                         FirstFormSearch.appendChild(inputOrdenamiento);
                         FirstFormSearch.appendChild(inputColunOrd);
 
-                        FirstFormSearch.submit();
                     }
+                    FirstFormSearch.submit();
                 }
 
                 allFormOderBy.forEach(form => {
