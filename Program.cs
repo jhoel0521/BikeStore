@@ -2,6 +2,7 @@ using BikeStore.Data;
 using BikeStore.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Rotativa.AspNetCore;
 
 namespace BikeStore
 {
@@ -47,7 +48,7 @@ namespace BikeStore
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}");
             app.MapRazorPages();
-
+            app.UseRotativa();
             app.Run();
         }
     }

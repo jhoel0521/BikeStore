@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using BikeStore.Models;
 using Microsoft.AspNetCore.Authorization;
+using Rotativa.AspNetCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace BikeStore.Controllers
 {
@@ -211,6 +213,26 @@ namespace BikeStore.Controllers
         private bool OrderExists(int id)
         {
             return _context.Orders.Any(e => e.OrderId == id);
+        }
+        //PDF
+        public async Task<IActionResult> PDF(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var order = await _context.Orders
+                .Include(o => o.Customer)
+                .Include(o => o.OrderItems)
+                .ThenInclude(oi => oi.Product)
+                .FirstOrDefaultAsync(m => m.OrderId == id);
+            if (order == null)
+            {
+                return NotFound();
+            }
+
+            return new ViewAsPdf(order);
         }
     }
 }

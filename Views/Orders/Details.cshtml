@@ -28,6 +28,7 @@
                             <a asp-action="Edit" asp-route-id="@Model?.OrderId" class="btn btn-warning">Editar</a>
                             <a asp-controller="OrderItems" asp-action="Index" asp-route-OrderId="@Model?.OrderId" class="btn btn-success">Ver Detalle</a>
                             <a asp-action="Index" class="btn btn-info">Volver a Lista</a>
+                            <a asp-action="PDF" asp-route-id="@Model?.OrderId" class="btn btn-danger" target="_blank">PDF</a>
                         </div>
                     </div>
 

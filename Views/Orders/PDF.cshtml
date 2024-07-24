@@ -1,0 +1,62 @@
+﻿@model BikeStore.Models.Order
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+
+
+
+<div class="d-flex justify-content-center">
+    <div class="row">
+        <div class="col-12">
+            <div class="card" style="width=100%">
+                <div class="card-body">
+                    <h5 class="card-title">Datos De la Orden</h5>
+                    <article class="card-text">
+                    </article>
+                    <ul class="list-group list-group-flush px-4">
+                        <li class="list-group-item">
+                            <p><b> @Html.DisplayNameFor(model => model.Customer):</b> @Html.DisplayFor(model => model.Customer.FirstName) @Html.DisplayFor(model => model.Customer.LastName)</p>
+                        </li>
+                        <li class="list-group-item">
+                            <p><b> @Html.DisplayNameFor(model => model.OrderDate):</b> @Html.DisplayFor(model => model.OrderDate)</p>
+                        </li>
+                    </ul>
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-striped">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        Codigo del Producto
+                                    </th>
+                                    <th>
+                                        Cantidad
+                                    </th>
+                                    <th>
+                                        Precio
+                                    </th>
+                                    <th>
+                                        Descuento
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model.OrderItems)
+                                {
+                                    <tr>
+                                        <td>@item.Product.ProductName</td>
+                                        <td>@item.Quantity</td>
+                                        <td>@item.Price</td>
+                                        <td>@item.Discount</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
