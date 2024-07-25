@@ -21,7 +21,7 @@ namespace BikeStore.Controllers
         }
 
         // GET: Products
-        public async Task<IActionResult> Index(string ColunOrd, string ordenamiento,string searchString, string StartPrice, string EndPrice, int? page, int pageSize = 10)
+        public async Task<IActionResult> Index(string ColunOrd, string ordenamiento, string searchString, string StartPrice, string EndPrice, int? page, int pageSize = 10)
         {
             ViewBag.ColunOrd = ColunOrd;
             ViewBag.ordenamiento = ordenamiento;
@@ -201,6 +201,22 @@ namespace BikeStore.Controllers
         private bool ProductExists(int id)
         {
             return _context.Products.Any(e => e.ProductId == id);
+        }
+        public async Task<IActionResult> TopProductos(int cantTop=10)
+        {
+            var topProducts = await _context.OrderItems
+                .GroupBy(o => o.ProductId)
+                .Select(g => new { ProductId = g.Key, Total = g.Sum(o => o.Quantity) })
+                .OrderByDescending(o => o.Total)
+                .Take(cantTop)
+                .ToListAsync();
+            var products = await _context.Products
+                .Where(p => topProducts.Select(o => o.ProductId).Contains(p.ProductId))
+                .ToListAsync();
+            ViewBag.cantTop = cantTop;
+            ViewBag.topProducts = topProducts;
+            return View(products);
+
         }
     }
 }

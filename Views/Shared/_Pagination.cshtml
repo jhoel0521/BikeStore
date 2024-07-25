@@ -4,7 +4,7 @@
     string action = ViewBag.Action ?? "Index";
     int pageSize = ViewBag.pageSize ?? 10;
     int startRecord = (currentPage - 1) * pageSize + 1;
-    int totalRecords = ViewBag.TotalItems;
+    int totalRecords = ViewBag.TotalItems??0;
     int endRecord = Math.Min(currentPage * pageSize, totalRecords);
     int pageGroupSize = 5;
 
