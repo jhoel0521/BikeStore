@@ -21,7 +21,7 @@ namespace BikeStore.Controllers
         }
 
         // GET: Products
-        public async Task<IActionResult> Index(string ColunOrd, string ordenamiento,string searchString, string StartPrice, string EndPrice)
+        public async Task<IActionResult> Index(string ColunOrd, string ordenamiento,string searchString, string StartPrice, string EndPrice, int? page, int pageSize = 10)
         {
             ViewBag.ColunOrd = ColunOrd;
             ViewBag.ordenamiento = ordenamiento;
@@ -61,7 +61,13 @@ namespace BikeStore.Controllers
             {
                 query = query.Where(o => o.Price <= endPrice);
             }
-            var list = await query.ToListAsync();
+            var (list, totalItems, totalPages, pageNumber) = await PaginationUtility.PaginateAsync(query, pageSize, page);
+
+            ViewBag.CurrentPage = pageNumber;
+            ViewBag.TotalItems = totalItems;
+            ViewBag.TotalPages = totalPages;
+            ViewBag.Action = nameof(Index);
+            ViewBag.pageSize = pageSize;
             var context = _context.Products
                 .Select(c => new { c.ProductId, FullName = $"{c.ProductName}" }).ToList();
             ViewData["Products"] = new SelectList(context, "ProductId", "FullName");

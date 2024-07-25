@@ -3,6 +3,9 @@
     int totalPages = ViewBag.TotalPages ?? 1;
     string action = ViewBag.Action ?? "Index";
     int pageSize = ViewBag.pageSize ?? 10;
+    int startRecord = (currentPage - 1) * pageSize + 1;
+    int totalRecords = ViewBag.TotalItems;
+    int endRecord = Math.Min(currentPage * pageSize, totalRecords);
     int pageGroupSize = 5;
 
     int startPage = currentPage - (pageGroupSize / 2);
@@ -22,6 +25,7 @@
 }
 
 <nav aria-label="Page navigation" id="pagination">
+    <p class="text-center">Mostrando registros del @startRecord al @endRecord de un total de @totalRecords registros</p>
     <ul class="pagination justify-content-center">
         <li class="page-item @(currentPage == 1 ? "disabled" : "")">
             <button class="page-link btn-pagination" data-page="1" aria-label="First">
@@ -84,10 +88,16 @@
             window.location.href = url.toString();
         }
         // añadimos las options
+        // del url obtenemos pageSize
+        const url = new URL(window.location.href);
+        const pageSize = url.searchParams.get("pageSize")??"10";
         for (let i = 1; i <= 5; i++) {
             const option = document.createElement("option");
             option.value = i * 10;
             option.text = i * 10;
+            if (option.value == pageSize) {
+                option.selected = true;
+            }
             selectPageSize.appendChild(option);
         }
         // añadimos la funcion

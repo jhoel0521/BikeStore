@@ -21,7 +21,7 @@ namespace BikeStore.Controllers
         }
 
         // GET: OrderItems
-        public async Task<IActionResult> Index(string ColunOrd, string ordenamiento,string OrderId)
+        public async Task<IActionResult> Index(string ColunOrd, string ordenamiento, string OrderId, int? page, int pageSize = 10)
         {
             ViewBag.ColunOrd = ColunOrd;
             ViewBag.ordenamiento = ordenamiento;
@@ -34,6 +34,18 @@ namespace BikeStore.Controllers
                     case "OrderId":
                         query = ordenamiento == "↑" ? query.OrderBy(c => c.OrderId) : query.OrderByDescending(c => c.OrderId);
                         break;
+                    case "ProductName":
+                        query = ordenamiento == "↑" ? query.OrderBy(c => c.Product.ProductName) : query.OrderByDescending(c => c.Product.ProductName);
+                        break;
+                    case "Quantity":
+                        query = ordenamiento == "↑" ? query.OrderBy(c => c.Quantity) : query.OrderByDescending(c => c.Quantity);
+                        break;
+                    case "Price":
+                        query = ordenamiento == "↑" ? query.OrderBy(c => c.Price) : query.OrderByDescending(c => c.Price);
+                        break;
+                    case "Discount":
+                        query = ordenamiento == "↑" ? query.OrderBy(c => c.Discount) : query.OrderByDescending(c => c.Discount);
+                        break;
                     default:
                         break;
                 }
@@ -42,7 +54,14 @@ namespace BikeStore.Controllers
             {
                 query = query.Where(o => o.OrderId == orderId);
             }
-            var list = await query.Include(o => o.Order).Include(o => o.Product).ToListAsync();
+            query = query.Include(o => o.Order).Include(o => o.Product);
+            var (list, totalItems, totalPages, pageNumber) = await PaginationUtility.PaginateAsync(query, pageSize, page);
+
+            ViewBag.CurrentPage = pageNumber;
+            ViewBag.TotalItems = totalItems;
+            ViewBag.TotalPages = totalPages;
+            ViewBag.Action = nameof(Index);
+            ViewBag.pageSize = pageSize;
             return View(list);
         }
 

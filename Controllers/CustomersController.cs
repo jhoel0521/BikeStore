@@ -22,7 +22,7 @@ namespace BikeStore.Controllers
         }
 
         // GET: Customers
-        public async Task<IActionResult> Index(string searchString, string ColunOrd, string ordenamiento, int? page)
+        public async Task<IActionResult> Index(string searchString, string ColunOrd, string ordenamiento, int? page,int pageSize=10)
         {
             var query = _context.Customers.AsQueryable();
 
@@ -70,11 +70,13 @@ namespace BikeStore.Controllers
             ViewBag.SearchString = searchString;
             ViewBag.ColunOrd = ColunOrd;
             ViewBag.ordenamiento = ordenamiento;
-            var (list, totalItems, totalPages, pageNumber) = await PaginationUtility.PaginateAsync(query, 10, page);
+            var (list, totalItems, totalPages, pageNumber) = await PaginationUtility.PaginateAsync(query, pageSize, page);
 
             ViewBag.CurrentPage = pageNumber;
+            ViewBag.TotalItems = totalItems;
             ViewBag.TotalPages = totalPages;
             ViewBag.Action = nameof(Index);
+            ViewBag.pageSize = pageSize;
             return View(list);
         }
 
@@ -89,6 +91,7 @@ namespace BikeStore.Controllers
             }
 
             var customer = await _context.Customers
+                .Include(c => c.Orders)
                 .FirstOrDefaultAsync(m => m.CustomerId == id);
             if (customer == null)
             {

@@ -9,6 +9,7 @@ using BikeStore.Models;
 using Microsoft.AspNetCore.Authorization;
 using Rotativa.AspNetCore;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using System.Drawing.Printing;
 
 namespace BikeStore.Controllers
 {
@@ -23,7 +24,7 @@ namespace BikeStore.Controllers
         }
 
         // GET: Orders
-        public async Task<IActionResult> Index(string ColunOrd, string ordenamiento, string CustomerId, string StartDate, string EndDate, int? page)
+        public async Task<IActionResult> Index(string ColunOrd, string ordenamiento, string CustomerId, string StartDate, string EndDate, int? page, int pageSize = 10)
         {
             var context = _context.Customers
                 .Select(c => new { c.CustomerId, FullName = $"{c.CustomerId}: {c.FirstName} {c.LastName}" }).ToList();
@@ -73,10 +74,13 @@ namespace BikeStore.Controllers
                 ViewData["ordenamiento"] = "↓";
             }
 
-            var (list, totalItems, totalPages, pageNumber) = await PaginationUtility.PaginateAsync(query, 10, page);
+            var (list, totalItems, totalPages, pageNumber) = await PaginationUtility.PaginateAsync(query, pageSize, page);
+
             ViewBag.CurrentPage = pageNumber;
+            ViewBag.TotalItems = totalItems;
             ViewBag.TotalPages = totalPages;
             ViewBag.Action = nameof(Index);
+            ViewBag.pageSize = pageSize;
             return View(list);
         }
 

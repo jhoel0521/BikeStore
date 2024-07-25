@@ -32,6 +32,6 @@ public partial class OrderItem
     public decimal Discount { get; set; }
     [Display(Name = "Codigo de la Orden")]
     public virtual Order? Order { get; set; }
-    [Display(Name = "Codigo del Producto")]
+    [Display(Name = "Producto")]
     public virtual Product? Product { get; set; }
 }
