@@ -15,6 +15,14 @@
                     <h5 class="card-title">Datos De la Orden</h5>
                     <article class="card-text">
                     </article>
+                    <div class="d-flex justify-content-end">
+                        <div class="btn-group">
+                            <a asp-action="Edit" asp-route-id="@Model?.OrderId" class="btn btn-warning">Editar</a>
+                            <a asp-controller="OrderItems" asp-action="Index" asp-route-OrderId="@Model?.OrderId" class="btn btn-success">Ver Detalle</a>
+                            <a asp-action="Index" class="btn btn-info">Volver a Lista</a>
+                            <a asp-action="PDF" asp-route-id="@Model?.OrderId" class="btn btn-danger" target="_blank">PDF</a>
+                        </div>
+                    </div>  
                     <ul class="list-group list-group-flush px-4">
                         <li class="list-group-item">
                             <p><b> @Html.DisplayNameFor(model => model.Customer):</b> @Html.DisplayFor(model => model.Customer.FirstName) @Html.DisplayFor(model => model.Customer.LastName)</p>
@@ -23,13 +31,36 @@
                             <p><b> @Html.DisplayNameFor(model => model.OrderDate):</b> @Html.DisplayFor(model => model.OrderDate)</p>
                         </li>
                     </ul>
-                    <div class="d-flex justify-content-end">
-                        <div class="btn-group">
-                            <a asp-action="Edit" asp-route-id="@Model?.OrderId" class="btn btn-warning">Editar</a>
-                            <a asp-controller="OrderItems" asp-action="Index" asp-route-OrderId="@Model?.OrderId" class="btn btn-success">Ver Detalle</a>
-                            <a asp-action="Index" class="btn btn-info">Volver a Lista</a>
-                            <a asp-action="PDF" asp-route-id="@Model?.OrderId" class="btn btn-danger" target="_blank">PDF</a>
-                        </div>
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-striped">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        Codigo del Producto
+                                    </th>
+                                    <th>
+                                        Cantidad
+                                    </th>
+                                    <th>
+                                        Precio
+                                    </th>
+                                    <th>
+                                        Descuento
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model.OrderItems)
+                                {
+                                    <tr>
+                                        <td>@item.Product.ProductName</td>
+                                        <td>@item.Quantity</td>
+                                        <td>@item.Price</td>
+                                        <td>@item.Discount</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
                     </div>
 
                 </div>

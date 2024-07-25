@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using BikeStore.Models;
 using Microsoft.AspNetCore.Authorization;
+using System.Drawing.Printing;
 
 namespace BikeStore.Controllers
 {
@@ -69,14 +70,10 @@ namespace BikeStore.Controllers
             ViewBag.SearchString = searchString;
             ViewBag.ColunOrd = ColunOrd;
             ViewBag.ordenamiento = ordenamiento;
-            int pageSize = 10;
-            int pageNumber = page ?? 1;
-            int totalItems = await query.CountAsync();
-            int totalPages = (int)Math.Ceiling(totalItems / (double)pageSize);
-            var list = await query.Skip((pageNumber-1)*pageSize).Take(pageSize).ToListAsync();
-            
+            var (list, totalItems, totalPages, pageNumber) = await PaginationUtility.PaginateAsync(query, 10, page);
+
             ViewBag.CurrentPage = pageNumber;
-            ViewBag.TotalPages = (int)totalItems/pageSize;
+            ViewBag.TotalPages = totalPages;
             ViewBag.Action = nameof(Index);
             return View(list);
         }

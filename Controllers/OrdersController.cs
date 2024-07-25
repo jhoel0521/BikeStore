@@ -23,7 +23,7 @@ namespace BikeStore.Controllers
         }
 
         // GET: Orders
-        public async Task<IActionResult> Index(string ColunOrd, string ordenamiento, string CustomerId, string StartDate, string EndDate)
+        public async Task<IActionResult> Index(string ColunOrd, string ordenamiento, string CustomerId, string StartDate, string EndDate, int? page)
         {
             var context = _context.Customers
                 .Select(c => new { c.CustomerId, FullName = $"{c.CustomerId}: {c.FirstName} {c.LastName}" }).ToList();
@@ -66,8 +66,17 @@ namespace BikeStore.Controllers
                         break;
                 }
             }
+            else
+            {
+                query = query.OrderByDescending(o => o.OrderId);
+                ViewData["ColunOrd"] = "OrderId";
+                ViewData["ordenamiento"] = "↓";
+            }
 
-            var list = await query.Include(o => o.Customer).ToListAsync();
+            var (list, totalItems, totalPages, pageNumber) = await PaginationUtility.PaginateAsync(query, 10, page);
+            ViewBag.CurrentPage = pageNumber;
+            ViewBag.TotalPages = totalPages;
+            ViewBag.Action = nameof(Index);
             return View(list);
         }
 
@@ -81,8 +90,10 @@ namespace BikeStore.Controllers
             }
 
             var order = await _context.Orders
-                .Include(o => o.Customer)
-                .FirstOrDefaultAsync(m => m.OrderId == id);
+                 .Include(o => o.Customer)
+                 .Include(o => o.OrderItems)
+                 .ThenInclude(oi => oi.Product)
+                 .FirstOrDefaultAsync(m => m.OrderId == id);
             if (order == null)
             {
                 return NotFound();
