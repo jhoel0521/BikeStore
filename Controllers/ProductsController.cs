@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using BikeStore.Models;
 using Microsoft.AspNetCore.Authorization;
+using Rotativa.AspNetCore;
 
 namespace BikeStore.Controllers
 {
@@ -215,7 +216,7 @@ namespace BikeStore.Controllers
                 .ToListAsync();
             ViewBag.cantTop = cantTop;
             ViewBag.topProducts = topProducts;
-            return View(products);
+            return new ViewAsPdf(products);
 
         }
     }
