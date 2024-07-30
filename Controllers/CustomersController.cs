@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using BikeStore.Models;
 using Microsoft.AspNetCore.Authorization;
 using System.Drawing.Printing;
+using Rotativa.AspNetCore;
 
 namespace BikeStore.Controllers
 {
@@ -22,10 +23,16 @@ namespace BikeStore.Controllers
         }
 
         // GET: Customers
-        public async Task<IActionResult> Index(string searchString, string ColunOrd, string ordenamiento, int? page,int pageSize=10)
+        public async Task<IActionResult> Index(string searchString, string ColunOrd, string ordenamiento, int? page, int pageSize = 10, bool pdf = false, bool allPDF = false)
         {
             var query = _context.Customers.AsQueryable();
-
+            ViewBag.allPDF = allPDF;
+            ViewBag.pdf = pdf;
+            if (pdf && allPDF)
+            {
+                var customers = await _context.Customers.ToListAsync();
+                return new ViewAsPdf("PDF", new { Customers = customers, AllPDF = allPDF });
+            }
             if (!string.IsNullOrEmpty(searchString))
             {
                 query = query.Where(
@@ -77,7 +84,15 @@ namespace BikeStore.Controllers
             ViewBag.TotalPages = totalPages;
             ViewBag.Action = nameof(Index);
             ViewBag.pageSize = pageSize;
-            return View(list);
+            if (pdf)
+            {
+                return new ViewAsPdf("PDF", new { Customers = list, CurrentPage = pageNumber, TotalItems = totalItems, TotalPages = totalPages, PageSize = pageSize, AllPDF = allPDF });
+
+            }
+            else
+            {
+                return View(list);
+            }
         }
 
 

@@ -1,0 +1,62 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+<button type="button" class="btn btn-link" data-bs-toggle="modal" data-bs-target="#modalPDF">
+    PDF
+</button>
+<!-- Modal -->
+<div class="modal fade" id="modalPDF" tabindex="-1" aria-labelledby="modalPDFLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalPDFLabel">Generar PDF</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <h2>¿Desea generar un PDF con la lista de clientes visibles?</h2>
+                <div class="d-flex justify-content-center">
+                    <div class="btn-group">
+                        <button type="button" id="modalPDFBtnPage" class="btn btn-primary">PDF Page # @ViewBag.CurrentPage</button>
+                        <button type="button" id="modalPDFBtnAll" class="btn btn-warning">Generar PDF Todos Clientes</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const URLActual = window.location.href;
+            function goToPDF(allPDF = false) {
+                // añadimos a la url el parametro pdf y allPDF
+                const url = new URL(URLActual);
+                url.searchParams.set("pdf", "true");
+                if (allPDF) {
+                    url.searchParams.set("allPDF", "true");
+                }
+                const modal = document.getElementById('modalPDF');
+                const btnClose = modal.querySelector('.btn-close');
+                const link = document.createElement('a');
+                link.href = url.toString();
+                link.target = "_blank";
+                modal.appendChild(link);
+                link.click();
+                btnClose.click();
+
+            }
+
+            const btnPage = document.getElementById('modalPDFBtnPage');
+            const btnAll = document.getElementById('modalPDFBtnAll');
+            btnPage.addEventListener('click', () => {
+                goToPDF();
+            });
+            btnAll.addEventListener('click', () => {
+                goToPDF(true);
+            });
+        });
+
+    </script>
+</div>

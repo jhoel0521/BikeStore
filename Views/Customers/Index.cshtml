@@ -52,7 +52,7 @@
                 <th>
                     @await Html.PartialAsync("_SortButtonComponent", Tuple.Create("ZipCode", Html.DisplayNameFor(model => model.ZipCode).ToString()))
                 </th>
-                <th><p class="d-flex align-items-center justify-content-center">Acciones</p></th>
+                <th><p class="d-flex align-items-center justify-content-center">Acciones @await Html.PartialAsync("_PdfIndex")</p></th>
             </tr>
         </thead>
         <tbody>
