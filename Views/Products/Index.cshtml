@@ -8,7 +8,7 @@
 
 <div class="d-flex justify-content-end">
     <div class="btn-group btn-group-sm">
-        <a asp-action="TopProductos" class="btn btn-secondary">Top Productos Vendidos</a>
+        <a asp-action="TopProductos" class="btn btn-secondary" target="_blank" >Top Productos Vendidos</a>
         <a asp-action="Create" class="btn btn-info">Crear nuevo Producto</a>
     </div>
 </div>
@@ -40,7 +40,7 @@
             <th>
                 @await Html.PartialAsync("_SortButtonComponent", Tuple.Create("Price", Html.DisplayNameFor(model => model.Price).ToString()))
             </th>
-            <th>Acciones</th>
+            <th><p class="d-flex align-items-center justify-content-center">Acciones @await Html.PartialAsync("_PdfIndex")</p></th>
         </tr>
     </thead>
     <tbody>

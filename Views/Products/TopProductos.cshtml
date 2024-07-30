@@ -1,45 +1,36 @@
-﻿@model IEnumerable<BikeStore.Models.Product>
+﻿@model BikeStore.Models.TopProductsViewModel
 
 @{
-    ViewData["Title"] = "Top de Productos Vendidios";
-    int topCant = ViewBag.cantTop;
-    var topProducts = ViewBag.TopProducts as IEnumerable<dynamic>;
+    ViewData["Title"] = "Top de Productos Vendidos";
+    var topProducts = Model.TopProducts;
+    var products = Model.Products;
+    int topCant = Model.CantTop;
 }
+<style>
 
-<h1 class="text-center">Top @topCant Productos Vendidios</h1>
-<div class="d-flex justify-content-center">
+    .Custom-center {
+        margin: 0 auto; 
+    }
+</style>
 
+<h1 class="text-center">Top @topCant Productos Vendidos</h1>
+<div class="Custom-center">
     <table class="table table-light table-striped table-hover text-center border border-3" style="width:70%;">
         <thead>
             <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.First().ProductName)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.First().ModelYear)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.First().Price)
-                </th>
-                <th>
-                    Cantidad Vendida
-                </th>
-
+                <th>@Html.DisplayNameFor(model => model.Products.First().ProductName)</th>
+                <th>@Html.DisplayNameFor(model => model.Products.First().ModelYear)</th>
+                <th>@Html.DisplayNameFor(model => model.Products.First().Price)</th>
+                <th>Cantidad Vendida</th>
             </tr>
         </thead>
         <tbody>
-            @foreach (var item in Model)
+            @foreach (var item in Model.Products)
             {
                 <tr>
-                    <td class="text-start">
-                        @Html.DisplayFor(modelItem => item.ProductName)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.ModelYear)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Price)
-                    </td>
+                    <td class="text-start">@Html.DisplayFor(modelItem => item.ProductName)</td>
+                    <td>@Html.DisplayFor(modelItem => item.ModelYear)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Price)</td>
                     <td>
                         @{
                             var cantidad = topProducts.FirstOrDefault(x => x.ProductId == item.ProductId)?.Total ?? 0;

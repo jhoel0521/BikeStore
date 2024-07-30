@@ -22,14 +22,18 @@ namespace BikeStore.Controllers
         }
 
         // GET: Products
-        public async Task<IActionResult> Index(string ColunOrd, string ordenamiento, string searchString, string StartPrice, string EndPrice, int? page, int pageSize = 10)
+        public async Task<IActionResult> Index(string ColunOrd, string ordenamiento, string searchString, string StartPrice, string EndPrice, int? page, int pageSize = 10, bool pdf = false, bool allPDF = false)
         {
             ViewBag.ColunOrd = ColunOrd;
             ViewBag.ordenamiento = ordenamiento;
             ViewBag.searchString = searchString;
             ViewBag.StartPrice = StartPrice;
             ViewBag.EndPrice = EndPrice;
-
+            if (pdf && allPDF)
+            {
+                var customers = await _context.Products.ToListAsync();
+                return new ViewAsPdf("PDF", new { Products = customers, AllPDF = allPDF });
+            }
             var query = _context.Products.AsQueryable();
             if (!string.IsNullOrEmpty(ColunOrd))
             {
@@ -72,7 +76,15 @@ namespace BikeStore.Controllers
             var context = _context.Products
                 .Select(c => new { c.ProductId, FullName = $"{c.ProductName}" }).ToList();
             ViewData["Products"] = new SelectList(context, "ProductId", "FullName");
-            return View(list);
+            if (pdf)
+            {
+                return new ViewAsPdf("PDF", new { Products = list, CurrentPage = pageNumber, TotalItems = totalItems, TotalPages = totalPages, PageSize = pageSize, AllPDF = allPDF });
+
+            }
+            else
+            {
+                return View(list);
+            }
         }
 
         // GET: Products/Details/5
@@ -203,7 +215,7 @@ namespace BikeStore.Controllers
         {
             return _context.Products.Any(e => e.ProductId == id);
         }
-        public async Task<IActionResult> TopProductos(int cantTop=10)
+        public async Task<IActionResult> TopProductos(int cantTop = 10)
         {
             var topProducts = await _context.OrderItems
                 .GroupBy(o => o.ProductId)
@@ -211,13 +223,20 @@ namespace BikeStore.Controllers
                 .OrderByDescending(o => o.Total)
                 .Take(cantTop)
                 .ToListAsync();
+
             var products = await _context.Products
                 .Where(p => topProducts.Select(o => o.ProductId).Contains(p.ProductId))
                 .ToListAsync();
-            ViewBag.cantTop = cantTop;
-            ViewBag.topProducts = topProducts;
-            return new ViewAsPdf(products);
 
+            var viewModel = new TopProductsViewModel
+            {
+                Products = products,
+                TopProducts = topProducts,
+                CantTop = cantTop
+            };
+
+            return new ViewAsPdf(viewModel);
         }
+
     }
 }

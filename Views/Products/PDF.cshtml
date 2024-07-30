@@ -1,0 +1,68 @@
+﻿@model dynamic
+
+@{
+    var Products = Model.Products as IEnumerable<BikeStore.Models.Product>;
+    bool allPDF = Model.AllPDF;
+
+    var mensaje = "";
+    if (allPDF)
+    {
+        mensaje = "Todos los productos";
+    }
+    else
+    {
+        var currentPage = Model.CurrentPage;
+        var totalItems = Model.TotalItems;
+        var totalPages = Model.TotalPages;
+        var pageSize = Model.PageSize;
+        mensaje = $"Productos filtrados - Página {currentPage} de {totalPages}";
+
+    }
+    ViewData["Title"] = "Lista de Productos";
+}
+<h1>Lista de Productos</h1>
+
+<table class="table table-light table-striped table-hover text-center">
+    <thead>
+        <tr>
+            @*             [Display(Name = "Nombre del producto", Prompt = "Bicicleta turbo 3000")]
+            [Required(ErrorMessage = "El Nombre del producto es requedio")]
+            [StringLength(200, ErrorMessage = "El nombre del producto  no puede exeder los 50 caracteres")]
+            public string? ProductName { get; set; }
+            [Display(Name = "Año del producto", Prompt = "2024")]
+            [Required(ErrorMessage = "El año del modelo del producto es requedido")]
+            public int ModelYear { get; set; }
+            [Display(Name ="Precio",Prompt ="99.99")]
+            [Column(TypeName = "decimal(10, 2)")]
+            [Required(ErrorMessage ="El Precio es requerido")]
+            public decimal? Price { get; set; } *@
+            <th>
+                Nombre del producto
+            </th>
+            <th>
+                Año del producto
+            </th>
+            <th>
+                Precio
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Products)
+        {
+            <tr>
+                <td class="text-start">
+                    @Html.DisplayFor(modelItem => item.ProductName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ModelYear)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Price)
+                </td>
+
+
+            </tr>
+        }
+    </tbody>
+</table>
